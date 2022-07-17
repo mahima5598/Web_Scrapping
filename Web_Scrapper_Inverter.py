@@ -17,11 +17,11 @@ from influxdb_client.client.write_api import SYNCHRONOUS
 while True:
 
 	def tag_visible(element):
-	    if element.parent.name in ['style', 'script', 'head', 'title', 'meta', '[document]']:
-		return False
-	    if isinstance(element, Comment):
-		return False
-	    return True
+		if element.parent.name in ['style', 'script', 'head', 'title', 'meta', '[document]']:
+			return False
+		if isinstance(element, Comment):
+			return False
+		return True
 
 
 	def text_from_html(body):
@@ -152,23 +152,23 @@ while True:
 	print(Json_Inverter)
 
 	# You can generate an API token from the "API Tokens Tab" in the UI
-	token = "UQ9CBHaU8JXRxx8Qwp9YVR_7yjE-kNnju_YtcCwBO27QAsqmnqeJxrU0fnoStTA4iOyiMM9qZv0qH9pjrwP_nA=="
+	token = "_mEZ0zAHEybHXBbq4d8idJE3PWM68K6EG0PXITwC56-6zOAZ-kyl3I4ONzZFpewquEjUzHZkDAs6vrbEviJO7w=="
 	org = "Volpow"
-	bucket = "Client_lib_test"
+	bucket = "Webscrapper"
 
 	client = InfluxDBClient(url="http://localhost:8086", token=token, org=org)
 
 	write_api = client.write_api(write_options=SYNCHRONOUS)
 
 	p = (
-		influxdb_client.Point("Inverter_test3")
+		influxdb_client.Point("Inverter")
 		.tag("SolarVu_data","SolarVu_data")
 		.field("Device_ID", Json_Inverter["Device_ID_1"])
 		.field("Power", Json_Inverter["Power_Now_1"])
 		.field("DC_Input_Power", Json_Inverter["DC_Input_Power_1"])
 		.field("DC_Input_Voltage", Json_Inverter["DC_Input_Voltage_1"])
 		.field("DC_Input_Current", Json_Inverter["DC_Input_Current_1"])
-		.field("AC_Output_Power", int(Json_Inverter["AC_Output_Power_1"]))
+		.field("AC_Output_Power", (Json_Inverter["AC_Output_Power_1"]))
 		.field("AC_Output_Voltage", Json_Inverter["AC_Output_Voltage_1"])
 		.field("AC_Output_Current", Json_Inverter["AC_Output_Current_1"])
 		.field("Frequency", Json_Inverter["Frequency_1"])
@@ -187,7 +187,7 @@ while True:
 		.field("DC_Input_Power", Json_Inverter["DC_Input_Power_2"])
 		.field("DC_Input_Voltage", Json_Inverter["DC_Input_Voltage_2"])
 		.field("DC_Input_Current", Json_Inverter["DC_Input_Current_2"])
-		.field("AC_Output_Power", int(Json_Inverter["AC_Output_Power_2"]))
+		.field("AC_Output_Power", (Json_Inverter["AC_Output_Power_2"]))
 		.field("AC_Output_Voltage", Json_Inverter["AC_Output_Voltage_2"])
 		.field("AC_Output_Current", Json_Inverter["AC_Output_Current_2"])
 		.field("Frequency", Json_Inverter["Frequency_2"])
@@ -225,8 +225,8 @@ while True:
 		.field("DC_Input_Power", Json_Inverter["DC_Input_Power_4"])
 		.field("DC_Input_Voltage", Json_Inverter["DC_Input_Voltage_4"])
 		.field("DC_Input_Current", Json_Inverter["DC_Input_Current_4"])
-		.field("AC_Output_Power", int(Json_Inverter["AC_Output_Power_4"]))
-		.field("AC_Output_Voltage", int(Json_Inverter["AC_Output_Voltage_4"]))
+		.field("AC_Output_Power", (Json_Inverter["AC_Output_Power_4"]))
+		.field("AC_Output_Voltage", (Json_Inverter["AC_Output_Voltage_4"]))
 		.field("AC_Output_Current", Json_Inverter["AC_Output_Current_4"])
 		.field("Frequency", Json_Inverter["Frequency_4"])
 		.field("Lifetime_Enery", Json_Inverter["Lifetime_Enery_4"])
@@ -244,12 +244,12 @@ while True:
 	     
 	write_api.write(bucket, org, record=p)
 
-	query = 'from(bucket: "Client_lib_test") |> range(start: -1h)'
+	query = 'from(bucket: "Webcrapper") |> range(start: -1h)'
 	tables = client.query_api().query(query, org=org)
 
 	for table in tables:
-	    for record in table.records:
-		print(record)
+		for record in table.records:
+			print(record)
 
 	client.close()
 
