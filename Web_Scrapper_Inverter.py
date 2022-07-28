@@ -156,7 +156,7 @@ while True:
 	org = "Volpow"
 	bucket = "Webscrapper"
 
-	client = InfluxDBClient(url="http://localhost:8086", token=token, org=org)
+	client = InfluxDBClient(url="http://localhost:8087", token=token, org=org)
 
 	write_api = client.write_api(write_options=SYNCHRONOUS)
 
@@ -244,7 +244,7 @@ while True:
 	     
 	write_api.write(bucket, org, record=p)
 
-	query = 'from(bucket: "Webcrapper") |> range(start: -1h)'
+	query = 'from(bucket: "Webscrapper") |> range(start: -1h)'
 	tables = client.query_api().query(query, org=org)
 
 	for table in tables:
